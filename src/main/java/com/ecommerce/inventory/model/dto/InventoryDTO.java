@@ -88,7 +88,6 @@ public class InventoryDTO implements Serializable {
 	/**
 	 *It represents image link for the item. 
 	 **/
-	@Column(name="image")
 	@Getter
 	@Setter
 	private String imageLink;
