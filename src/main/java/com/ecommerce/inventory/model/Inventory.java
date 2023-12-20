@@ -103,6 +103,14 @@ public class Inventory implements Serializable {
 	@Setter
 	private double probableIncrementOrder;
 	
+	/**
+	 *It represents image link for the item. 
+	 **/
+	@Column(name="image")
+	@Getter
+	@Setter
+	private String imageLink;
+	
 	@Override
     public boolean equals(Object o) {
         if (this == o) return true;

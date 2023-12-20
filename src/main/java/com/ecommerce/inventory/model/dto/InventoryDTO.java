@@ -3,6 +3,9 @@ package com.ecommerce.inventory.model.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
+
+import javax.persistence.Column;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -81,5 +84,13 @@ public class InventoryDTO implements Serializable {
 	@Getter
 	@Setter
 	private double probableIncrementOrder;
+	
+	/**
+	 *It represents image link for the item. 
+	 **/
+	@Column(name="image")
+	@Getter
+	@Setter
+	private String imageLink;
 
 }

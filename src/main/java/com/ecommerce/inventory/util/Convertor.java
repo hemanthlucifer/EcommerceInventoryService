@@ -26,6 +26,7 @@ public class Convertor {
 		inventoryDto.setPreviousThresoldDate(inventory.getPreviousThresoldDate());
 		inventoryDto.setProbableIncrementOrder(inventory.getProbableIncrementOrder());
 		inventoryDto.setThresholdQuantity(inventory.getThresholdQuantity());
+		inventoryDto.setImageLink(inventory.getImageLink());
 		logger.info("convertEntityToDto completed sucsessfully");
 		return inventoryDto;
 	}
@@ -42,6 +43,7 @@ public class Convertor {
 		inventory.setPreviousThresoldDate(inventoryDto.getPreviousThresoldDate());
 		inventory.setProbableIncrementOrder(inventoryDto.getProbableIncrementOrder());
 		inventory.setThresholdQuantity(inventoryDto.getThresholdQuantity());
+		inventory.setImageLink(inventoryDto.getImageLink());
 		logger.info("convertDtoToEntity completed sucessfully");
 		return inventory;
 	}

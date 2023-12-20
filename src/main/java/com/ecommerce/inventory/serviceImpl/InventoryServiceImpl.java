@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -52,8 +53,16 @@ public class InventoryServiceImpl implements InventoryService{
 
 	@Override
 	public InventoryDTO updateInventoryItem(InventoryDTO inventoryDto) {
-		
-		return null;
+		logger.info("updateInventoryItem started");
+		Optional<Inventory> existingItem = inventoryRepository.findById(inventoryDto.getItemId());
+		if(existingItem.isEmpty() || existingItem == null) {
+			throw new ProductNotFoundException(messageSource.getMessage(ExceptionCodes.productNotFoundCode, null, LocaleContextHolder.getLocale()));
+		}
+		Inventory newItem = inventoryConvertor.convertDtoToEntity(inventoryDto);
+		BeanUtils.copyProperties(newItem, existingItem.get());
+		Inventory  updatedItem = inventoryRepository.save(existingItem.get());
+		logger.info("updateInventoryItem completed sucessfully");
+		return inventoryConvertor.convertEntityToDto(updatedItem);
 	}
 
 	@Override
