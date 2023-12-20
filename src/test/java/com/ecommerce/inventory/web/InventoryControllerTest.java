@@ -13,13 +13,13 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+
 import org.springframework.test.web.servlet.MockMvc;
 
 
@@ -34,7 +34,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 
-@RunWith(SpringRunner.class)
+//@RunWith(SpringRunner.class)
 @WebMvcTest(InventoryController.class)
 class InventoryControllerTest {
 	
@@ -90,13 +90,6 @@ class InventoryControllerTest {
 				.content(requestJson)).andDo(print()).andExpect(status().isOk());
 	}
 	
-	@Test
-	void testGetItemById() throws Exception {
-		int  itemId = 1;
-		//when(inventoryRepository.findById(itemId)).thenReturn(Optional.of(inventory));
-		when(inventoryService.getItemById(itemId)).thenReturn(inventoryDTO);
-		this.mockMvc.perform(get("/inventory/getItem/1")).andDo(print()).andExpect(status().isOk());
-	}
 	
 	@Test
 	void testGetQuantityByItemId() throws Exception {
@@ -110,6 +103,14 @@ class InventoryControllerTest {
 		int itemId = 1;
 		when(inventoryService.deleteInventoryItem(itemId)).thenReturn(true);
 		this.mockMvc.perform(delete("/inventory/deleteItem/1")).andDo(print()).andExpect(status().isOk());
+	}
+	
+	@Test
+	void testGetItemById() throws Exception {
+		int  itemId = 1;
+		//when(inventoryRepository.findById(itemId)).thenReturn(Optional.of(inventory));
+		when(inventoryService.getItemById(itemId)).thenReturn(inventoryDTO);
+		this.mockMvc.perform(get("/inventory/getItem/1")).andDo(print()).andExpect(status().isOk());
 	}
 
 }

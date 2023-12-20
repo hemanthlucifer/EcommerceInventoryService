@@ -1,12 +1,14 @@
 package com.ecommerce.inventory.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -91,6 +93,18 @@ public class InventoryController {
 		inventoryService.deleteInventoryItem(itemId);
 			return new ResponseEntity<>(null,HttpStatus.OK);
 		
+	}
+	
+	@ApiResponses(value= {
+			@ApiResponse(code=200,message="Update the item",response=InventoryDTO.class),
+			@ApiResponse(code= 400, message="Bad Request"),
+			@ApiResponse(code = 500, message = "Something went wrong")
+	})
+	@ApiOperation(value="Update item in the inventory", notes = "It updates the item in the inventory", nickname = "update item")
+	@PatchMapping("/updateItem/{itemId}")
+	public ResponseEntity<InventoryDTO> updateInventoryItem(@PathVariable int itemId,@RequestBody Map<String,Object> fields){
+		InventoryDTO responseDto = inventoryService.updateInventoryItem(itemId,fields);
+		return new ResponseEntity<>(responseDto,HttpStatus.OK);
 	}
 
 }

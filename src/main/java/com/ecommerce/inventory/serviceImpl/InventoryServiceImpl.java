@@ -1,7 +1,9 @@
 package com.ecommerce.inventory.serviceImpl;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -10,6 +12,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.util.ReflectionUtils;
+import java.lang.reflect.Field;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.inventory.exception.ExceptionCodes;
@@ -52,17 +56,21 @@ public class InventoryServiceImpl implements InventoryService{
 	}
 
 	@Override
-	public InventoryDTO updateInventoryItem(InventoryDTO inventoryDto) {
+	public InventoryDTO updateInventoryItem(int itemID, Map<String,Object> fields) {
 		logger.info("updateInventoryItem started");
-		Optional<Inventory> existingItem = inventoryRepository.findById(inventoryDto.getItemId());
+		Optional<Inventory> existingItem = inventoryRepository.findById(itemID);
 		if(existingItem.isEmpty() || existingItem == null) {
 			throw new ProductNotFoundException(messageSource.getMessage(ExceptionCodes.productNotFoundCode, null, LocaleContextHolder.getLocale()));
 		}
-		Inventory newItem = inventoryConvertor.convertDtoToEntity(inventoryDto);
-		BeanUtils.copyProperties(newItem, existingItem.get());
-		Inventory  updatedItem = inventoryRepository.save(existingItem.get());
+		fields.forEach((key,value)->{
+			Field field = ReflectionUtils.findField(Inventory.class, key);
+			field.setAccessible(true);
+			ReflectionUtils.setField(field, existingItem.get(), value);
+		});
+		InventoryDTO updatedItem = inventoryConvertor.convertEntityToDto(inventoryRepository.save(existingItem.get()));
 		logger.info("updateInventoryItem completed sucessfully");
-		return inventoryConvertor.convertEntityToDto(updatedItem);
+		return updatedItem;
+		
 	}
 
 	@Override

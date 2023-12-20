@@ -1,8 +1,9 @@
 package com.ecommerce.inventory.service;
 
 import java.util.List;
+import java.util.Map;
 
-import org.springframework.stereotype.Service;
+
 
 import com.ecommerce.inventory.model.dto.InventoryDTO;
 
@@ -10,7 +11,7 @@ import com.ecommerce.inventory.model.dto.InventoryDTO;
 public interface InventoryService {
 	
 	public InventoryDTO addInventoryItem(InventoryDTO inventoryDto);
-	public InventoryDTO updateInventoryItem(InventoryDTO inventoryDto);
+	public InventoryDTO updateInventoryItem(int itemID, Map<String,Object> fields);
 	public boolean deleteInventoryItem(int itemID);
 	public int getAvailableQuantity(int itemID);
 	public InventoryDTO getItemById(int itemId);
